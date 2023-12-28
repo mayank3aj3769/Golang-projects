@@ -1,4 +1,4 @@
-module github.com/mayank3aj3769/Golang-projects
+module go-database
 
 go 1.21.5
 

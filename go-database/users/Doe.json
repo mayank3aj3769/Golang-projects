@@ -1,0 +1,11 @@
+{
+	"Name": "Doe",
+	"Age": 27,
+	"Company": "Microsoft",
+	"Address": {
+		"City": "CH",
+		"Pincode": 30023,
+		"State": "IL",
+		"Country": "USA"
+	}
+}

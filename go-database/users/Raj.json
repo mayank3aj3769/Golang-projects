@@ -1,0 +1,11 @@
+{
+	"Name": "Raj",
+	"Age": 27,
+	"Company": "Google",
+	"Address": {
+		"City": "SF",
+		"Pincode": 30021,
+		"State": "LA",
+		"Country": "USA"
+	}
+}
