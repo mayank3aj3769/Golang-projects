@@ -1,0 +1,9 @@
+{
+	"Name": "John",
+	"Age": 24,
+	"Company": "MSF",
+	"Address": {
+		"City": "NYC",
+		"Pincode": 30022
+	}
+}

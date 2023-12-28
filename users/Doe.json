@@ -1,0 +1,9 @@
+{
+	"Name": "Doe",
+	"Age": 22,
+	"Company": "FBK",
+	"Address": {
+		"City": "CH",
+		"Pincode": 30023
+	}
+}
