@@ -1,9 +1,0 @@
-{
-	"Name": "Paul",
-	"Age": 21,
-	"Company": "NKE",
-	"Address": {
-		"City": "MI",
-		"Pincode": 30024
-	}
-}

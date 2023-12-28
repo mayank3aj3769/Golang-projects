@@ -1,9 +1,0 @@
-{
-	"Name": "Mayank",
-	"Age": 27,
-	"Company": "Google",
-	"Address": {
-		"City": "SF",
-		"Pincode": 30020
-	}
-}

@@ -1,9 +1,0 @@
-{
-	"Name": "Raj",
-	"Age": 27,
-	"Company": "Google",
-	"Address": {
-		"City": "LA",
-		"Pincode": 30021
-	}
-}
