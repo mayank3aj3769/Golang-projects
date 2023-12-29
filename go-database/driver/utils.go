@@ -121,7 +121,12 @@ func AddNewCollection(db *Driver, reader *bufio.Reader) {
 	}
 
 	//err = db.Write(collectionName, dataJSON)
-	if err := os.WriteFile(".//Collections//"+collectionName+".json", dataJSON, 0644); err != nil {
+	dir, err := os.Getwd()
+	if err != nil {
+		fmt.Println("Error getting current directory:", err)
+		return
+	}
+	if err = os.WriteFile(dir+"/Collections/"+collectionName+".json", dataJSON, 0644); err != nil {
 		fmt.Println("Error writing to database: ", err)
 	}
 
@@ -129,7 +134,13 @@ func AddNewCollection(db *Driver, reader *bufio.Reader) {
 
 func ListCollections(db *Driver) {
 	// Read the contents of the directory
-	files, err := os.ReadDir(".//Collections//")
+	dir, err := os.Getwd()
+	if err != nil {
+		fmt.Println("Error getting current directory:", err)
+		return
+	}
+
+	files, err := os.ReadDir(dir + "/Collections/")
 	if err != nil {
 		fmt.Println("Error reading collections directory:", err)
 		return
@@ -153,7 +164,13 @@ func ViewCollection(db *Driver, reader *bufio.Reader) {
 	mutex.Lock()
 	defer mutex.Unlock()
 
-	b, err := os.ReadFile(".//Collections//" + collectionName + ".json")
+	dir, err := os.Getwd()
+	if err != nil {
+		fmt.Println("Error getting current directory:", err)
+		return
+	}
+
+	b, err := os.ReadFile(dir + "/Collections/" + collectionName + ".json")
 	if err != nil {
 		fmt.Println("Error reading collection:", err)
 		return
@@ -180,7 +197,13 @@ func UpdateCollection(db *Driver, reader *bufio.Reader) {
 	mutex.Lock()
 	defer mutex.Unlock()
 
-	b, err := os.ReadFile(".//Collections//" + collectionName + ".json")
+	dir, err := os.Getwd()
+	if err != nil {
+		fmt.Println("Error getting current directory:", err)
+		return
+	}
+
+	b, err := os.ReadFile(dir + "/Collections/" + collectionName + ".json")
 	if err != nil {
 		fmt.Println("Error reading collection:", err)
 		return
@@ -233,7 +256,12 @@ func DeleteCollection(db *Driver, reader *bufio.Reader) {
 	defer mutex.Unlock()
 
 	// Construct the file path for the collection
-	filePath := ".//Collections//" + collectionName + ".json"
+	dir, err := os.Getwd()
+	if err != nil {
+		fmt.Println("Error getting current directory:", err)
+		return
+	}
+	filePath := dir + ".//Collections//" + collectionName + ".json"
 
 	// Check if the file exists
 	if _, err := os.Stat(filePath); os.IsNotExist(err) {
@@ -252,7 +280,7 @@ func DeleteCollection(db *Driver, reader *bufio.Reader) {
 	}
 
 	// Delete the file
-	err := os.Remove(filePath)
+	err = os.Remove(filePath)
 	if err != nil {
 		fmt.Println("Error deleting collection:", err)
 	} else {

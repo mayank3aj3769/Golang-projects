@@ -13,7 +13,7 @@ func main() {
 	_, err := http.Get(url)
 	driver.DbStart()
 	if err != nil {
-		fmt.Println(err)
+		fmt.Println("Shut Down ")
 	}
 
 	log.Println("========= Shutting down gokuDB ==========")
