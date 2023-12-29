@@ -34,6 +34,7 @@ type Options struct {
 	Logger
 }
 
+// to export the function always make sure that function name starts with  caps
 func New(dir string, options *Options) (*Driver, error) {
 
 	/*
@@ -66,14 +67,14 @@ func New(dir string, options *Options) (*Driver, error) {
 	return &driver, os.MkdirAll(dir, 0755) //0755 is access permission
 }
 
-func stat(path string) (fi os.FileInfo, err error) {
+func Stat(path string) (fi os.FileInfo, err error) {
 	if fi, err = os.Stat(path); os.IsNotExist(err) {
 		fi, err = os.Stat(path + ".json")
 	}
 	return
 }
 
-func (d *Driver) getOrCreateMutex(collection string) *sync.Mutex {
+func (d *Driver) GetOrCreateMutex(collection string) *sync.Mutex {
 
 	d.mutex.Lock()
 	defer d.mutex.Unlock()
@@ -92,7 +93,7 @@ func AddNewCollection(db *Driver, reader *bufio.Reader) {
 	collectionName, _ := reader.ReadString('\n')
 	collectionName = strings.TrimSpace(collectionName)
 
-	mutex := db.getOrCreateMutex(collectionName)
+	mutex := db.GetOrCreateMutex(collectionName)
 	mutex.Lock()
 	defer mutex.Unlock()
 	collectionData := make(map[string]string)
@@ -143,12 +144,39 @@ func ListCollections(db *Driver) {
 	}
 }
 
+func ViewCollection(db *Driver, reader *bufio.Reader) {
+	fmt.Print("Enter the name of the collection to view : ")
+	collectionName, _ := reader.ReadString('\n')
+	collectionName = strings.TrimSpace(collectionName)
+
+	mutex := db.GetOrCreateMutex(collectionName)
+	mutex.Lock()
+	defer mutex.Unlock()
+
+	b, err := os.ReadFile(".//Collections//" + collectionName + ".json")
+	if err != nil {
+		fmt.Println("Error reading collection:", err)
+		return
+	}
+
+	//fmt.Println(b)
+	// Unmarshal JSON data into a map
+	collectionData := make(map[string]interface{})
+	er := json.Unmarshal(b, &collectionData)
+	if er != nil {
+		fmt.Println("Error unmarshalling data:", err)
+		return
+	}
+	updatedDataJSON, err := json.MarshalIndent(collectionData, "", "\t")
+	fmt.Println(string(updatedDataJSON))
+}
+
 func UpdateCollection(db *Driver, reader *bufio.Reader) {
 	fmt.Print("Enter the name of the collection to update: ")
 	collectionName, _ := reader.ReadString('\n')
 	collectionName = strings.TrimSpace(collectionName)
 
-	mutex := db.getOrCreateMutex(collectionName)
+	mutex := db.GetOrCreateMutex(collectionName)
 	mutex.Lock()
 	defer mutex.Unlock()
 
@@ -200,7 +228,7 @@ func DeleteCollection(db *Driver, reader *bufio.Reader) {
 	fmt.Print("Enter the name of the collection to delete: ")
 	collectionName, _ := reader.ReadString('\n')
 	collectionName = strings.TrimSpace(collectionName)
-	mutex := db.getOrCreateMutex(collectionName)
+	mutex := db.GetOrCreateMutex(collectionName)
 	mutex.Lock()
 	defer mutex.Unlock()
 
