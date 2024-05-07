@@ -1,0 +1,30 @@
+syntax ="proto3";
+
+option go_package="grpcTutorial";
+
+message Amount {
+    int64 amount=1; //position 1 of message
+    string currency=2; //position 2 of message
+}
+
+message CreateRequest{
+    Amount amount =1;
+    string from=2;
+    string to=3;
+
+}
+
+message CreateResponse{
+    bytes pdf=1;
+    bytes docx=2;
+}
+
+service Invoicer {
+
+    //define endpoints
+
+    // The following messages have to be defined
+    rpc Create(CreateRequest) returns (CreateResponse);
+}
+
+// Now generate the code
