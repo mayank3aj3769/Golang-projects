@@ -1,0 +1,37 @@
+syntax="proto3";
+
+option go_package="./proto";
+
+package grpcserver; // Name of the go module
+
+// command to generate greet.pb.go -> "protoc --go_out=. --go-grpc_out=. proto/greet.proto"
+service GreetService{
+    rpc SayHello(NoParam) returns (HelloResponse); //unary rpc --> 1 req, 1 response
+
+    rpc SayHelloServerStreaming(NamesList) returns (stream HelloResponse); // Server Stream --> Server sends a stream of responses
+
+    rpc SayHelloClientStreaming(stream HelloRequest) returns (MessageList);
+
+    rpc SayHelloBidirectionalStreaming (stream HelloRequest) returns( stream HelloResponse);
+    // --> Bi-dir. streaming is async process where both client and server send a stream of reqs/res . 
+    // --> Even though the communication is in form of streams not queues, the order of messages is preserved.
+}
+
+
+message NoParam{};
+
+message HelloResponse{
+    string message=1;
+}
+
+message  HelloRequest{
+    string message=1;
+}
+
+message NamesList{
+    repeated string names=1;
+}
+
+message MessageList{
+    repeated string messages=1;
+}
