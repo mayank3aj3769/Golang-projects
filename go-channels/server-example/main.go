@@ -90,18 +90,24 @@ func main() {
 	//ch2 := make(chan string, 2)
 
 	fmt.Printf("Printing channel content of new server \n")
-free:
-	for {
-		select {
-		case user, ok := <-sr.userch:
-			if !ok {
-				break // Exit the loop if the channel is closed
-			}
+	go func() { // if you don't use a go-routine here the last channel message won't be read
+		// since buffered channel is blocking in nature
+		for user := range sr.userch {
 			fmt.Println(user)
-		default:
-			break free // Exit the loop when the channel is empty
 		}
-	}
+		// free:
+		// 	for {
+		// 		select {
+		// 		case user, ok := <-sr.userch:
+		// 			if !ok {
+		// 				break // Exit the loop if the channel is closed
+		// 			}
+		// 			fmt.Println(user)
+		// 		default:
+		// 			break free // Exit the loop when the channel is empty
+		// 		}
+		// 	}
+	}()
 
 	fmt.Println("Printing users map of new server")
 	for users := range sr.users {
